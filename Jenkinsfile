@@ -26,7 +26,7 @@ pipeline {
         steps{
           echo 'printenv'
           sh 'docker build -t ashishizofficial/spring-boot:""$GIT_COMMIT"" .'
-          sh 'echo $dockerpass | docker login -u ashishizofficial --password-stdin'
+          sh 'echo $dockerpass_PSW | docker login -u $dockerpass_USR --password-stdin'
           sh 'docker push ashishizofficial/spring-boot:""$GIT_COMMIT""'
         }
       }
