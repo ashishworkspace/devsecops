@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment{
-    dockerhub=credentials('docker-cred')
+    docker-pass=credentials('docker-cred')
   }
 
   stages {
@@ -26,8 +26,8 @@ pipeline {
         steps{
           echo 'printenv'
           sh 'docker build -t ashishizofficial/spring-boot:""$GIT_COMMIT"" .'
-          sh 'echo $dockerhub'
-          // sh 'docker push ashishizofficial/spring-boot:""$GIT_COMMIT""'
+          sh 'echo $docker-pass | docker login -u ashishizofficial --password-stdin'
+          sh 'docker push ashishizofficial/spring-boot:""$GIT_COMMIT""'
         }
       }
   }
