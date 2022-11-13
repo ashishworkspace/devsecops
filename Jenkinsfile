@@ -1,8 +1,8 @@
 pipeline {
   agent any
-  // environment {
-  //   dockerpass = credentials('docker-cred')
-  // }
+  environment {
+    dockerpass = credentials('docker-cred')
+  }
 
   stages {
       stage('Build Artifact') {
@@ -23,7 +23,7 @@ pipeline {
       }
       }
       stage('Docker Build and push') {
-      docker.withRegistry('https://registry.hub.docker.com', 'docker-cred') {
+      docker.withRegistry('https://registry.hub.docker.com', 'dockerpass') {
         steps {
           echo 'printenv'
           sh 'docker build -t ashishizofficial/spring-boot:""$GIT_COMMIT"" .'
