@@ -1,7 +1,7 @@
 pipeline {
   agent any
-  environment{
-    dockerpass=credentials('docker-cred')
+  environment {
+    dockerpass = credentials('docker-cred')
   }
 
   stages {
@@ -22,13 +22,21 @@ pipeline {
         }
       }
       }
-      stage('Docker Build and push'){
-        steps{
+      stage('Docker Build and push') {
+        steps {
           echo 'printenv'
           sh 'docker build -t ashishizofficial/spring-boot:""$GIT_COMMIT"" .'
           sh 'echo $dockerpass_PSW | docker login -u $dockerpass_USR --password-stdin'
           sh 'docker push ashishizofficial/spring-boot:""$GIT_COMMIT""'
         }
+      }
+      stage('Kubernetes Deployment - DEV') {
+      steps {
+        withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://127.0.0.1:6443']) {
+          sh "sed -i 's#replace#siddharth67/numeric-app:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
+          sh 'kubectl apply -f k8s_deployment_service.yaml'
+        }
+      }
       }
   }
 }
