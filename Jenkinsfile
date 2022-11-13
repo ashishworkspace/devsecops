@@ -23,8 +23,8 @@ pipeline {
         steps{
           echo 'printenv'
           sh 'docker build -t ashishizofficial/spring-boot:""$GIT_COMMIT"" .'
-          sh 'echo $DOCKER_PASS'
-          // sh 'docker push ashishizofficial/spring-boot:""$GIT_COMMIT""'
+          sh 'echo $DOCKER_PASS | docker login -u ashishizofficial --password-stdin'
+          sh 'docker push ashishizofficial/spring-boot:""$GIT_COMMIT""'
         }
       }
   }
