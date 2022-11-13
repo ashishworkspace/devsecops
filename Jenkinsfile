@@ -32,8 +32,8 @@ pipeline {
       }
       stage('Kubernetes Deployment - DEV') {
       steps {
-        withKubeConfig([credentialsId: 'kubeconfig', serverUrl: 'https://127.0.0.1:6443']) {
-          sh "sed -i 's#ashishizofficial/spring-boot:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
+        withKubeConfig([credentialsId: 'kubeconfig']) {
+          sh "sed -i 's#replace#ashishizofficial/spring-boot:${GIT_COMMIT}#g' k8s_deployment_service.yaml"
           sh 'kubectl apply -f k8s_deployment_service.yaml'
         }
       }
