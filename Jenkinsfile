@@ -23,14 +23,17 @@ pipeline {
       }
       }
       stage('Docker Build and push') {
-      docker.withRegistry([url: 'https://registry.hub.docker.com', credentialsId: 'docker-cred']) {
+
         steps {
+          scripts{
+            docker.withRegistry('https://registry.hub.docker.com', 'docker-cred') {
+            }
           echo 'printenv'
           sh 'docker build -t ashishizofficial/spring-boot:""$GIT_COMMIT"" .'
           // sh 'echo $dockerpass_PSW | docker login -u $dockerpass_USR --password-stdin'
           sh 'docker push ashishizofficial/spring-boot:""$GIT_COMMIT""'
+          }
+
         }
       }
-      }
   }
-}
