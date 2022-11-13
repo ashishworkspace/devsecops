@@ -19,5 +19,13 @@ pipeline {
         }
       }
       }
+      stage('Docker Build and push'){
+        steps{
+          echo 'printenv'
+          sh 'docker build -t ashishizofficial/spring-boot:""$GIT_COMMIT"" .'
+          echo $DOCKER_PASS
+          // sh 'docker push ashishizofficial/spring-boot:""$GIT_COMMIT""'
+        }
+      }
   }
 }
