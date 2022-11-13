@@ -1,7 +1,7 @@
 pipeline {
   agent any
-  environment{
-    dockerpass=credentials('docker-cred')
+  environment {
+    dockerpass = credentials('docker-cred')
   }
 
   stages {
@@ -22,13 +22,15 @@ pipeline {
         }
       }
       }
-      stage('Docker Build and push'){
-        steps{
+      stage('Docker Build and push') {
+      docker.withRegistry('credentials-id': 'docker-cred', 'url' : '' ) {
+        steps {
           echo 'printenv'
           sh 'docker build -t ashishizofficial/spring-boot:""$GIT_COMMIT"" .'
-          sh 'echo $dockerpass_PSW | docker login -u $dockerpass_USR --password-stdin'
+          // sh 'echo $dockerpass_PSW | docker login -u $dockerpass_USR --password-stdin'
           sh 'docker push ashishizofficial/spring-boot:""$GIT_COMMIT""'
         }
+      }
       }
   }
 }
